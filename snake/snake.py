@@ -1,3 +1,4 @@
+from time import sleep
 from ipycanvas import RoughCanvas, hold_canvas
 from ipywidgets import Image
 import random
@@ -7,6 +8,7 @@ class Snake():
     # intentionally exposed to allow "cheating"
     score = 0
     win_state = 'running'
+    time_step = .1
 
     def __init__(self, dim: int = 300, n: int = 10):
         self.canvas = RoughCanvas(width=dim, height=dim * 1.15)
@@ -37,8 +39,9 @@ class Snake():
         self._draw()
     
     def _newApple(self):
-        if (self.n ** 2 - len(self._full)) <= 1:
+        if (self.n ** 2 - len(self._full)) == 0:
             self.win_state = 'won'
+            self._apple = None
             return
 
         while True:
@@ -143,8 +146,8 @@ class Snake():
                 x += .5
                 y += .5
                 # wiggle
-                x += (random.random() - .5) * .3
-                y += (random.random() - .5) * .3
+                x += (random.random() - .5) * .2
+                y += (random.random() - .5) * .2
 
                 if i == 0:
                     canvas.move_to(x * grid_size, y * grid_size)
@@ -171,8 +174,9 @@ class Snake():
             canvas.stroke_rect(0, 0, dim, dim)
             
             # apple
-            apple_loc = (self._apple[0] * grid_size, self._apple[1] * grid_size)
-            canvas.draw_image(self._sprites['apple'], *apple_loc, grid_size, grid_size)
+            if self._apple is not None:
+                apple_loc = (self._apple[0] * grid_size, self._apple[1] * grid_size)
+                canvas.draw_image(self._sprites['apple'], *apple_loc, grid_size, grid_size)
             
             # score
             canvas.font = '30px serif'
@@ -198,3 +202,4 @@ class Snake():
             canvas.restore()
             
             canvas.restore()
+        sleep(self.time_step)
