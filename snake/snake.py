@@ -56,18 +56,19 @@ class Snake():
             self.win_state = 'lost'
             return
         
+        self._tail.append(next_step)
+        self._full.add(next_step)
+        
         if next_step == self._apple:
             self._newApple()
             self.score += 1
         else:
             self._full.remove(self._tail[0])
             self._tail.pop(0) # shift
-        
-        self._tail.append(next_step)
-        self._full.add(next_step)
     
     def forward(self):
         if self.win_state != 'running':
+            self._draw()
             return
         head = self._tail[-1]
         neck = self._tail[-2]
@@ -77,6 +78,7 @@ class Snake():
     
     def left(self):
         if self.win_state != 'running':
+            self._draw()
             return
         head = self._tail[-1]
         neck = self._tail[-2]
@@ -86,6 +88,7 @@ class Snake():
     
     def right(self):
         if self.win_state != 'running':
+            self._draw()
             return
         head = self._tail[-1]
         neck = self._tail[-2]
