@@ -35,10 +35,10 @@ class Snake():
             ],
         )
         
-        self._newApple()
+        self._new_apple()
         self._draw()
     
-    def _newApple(self):
+    def _new_apple(self):
         if (self.n ** 2 - len(self._full)) == 0:
             self.win_state = 'won'
             self._apple = None
@@ -49,6 +49,12 @@ class Snake():
             self._apple = (r(), r())
             if self._apple not in self._full:
                 break
+    
+    def apple_location(self):
+        return self._apple
+    
+    def head_location(self):
+        return self._tail[-1]
     
     def _step(self, dir: (int, int)):
         head = self._tail[-1]
@@ -63,7 +69,7 @@ class Snake():
         self._full.add(next_step)
         
         if next_step == self._apple:
-            self._newApple()
+            self._new_apple()
             self.score += 1
         else:
             self._full.remove(self._tail[0])
